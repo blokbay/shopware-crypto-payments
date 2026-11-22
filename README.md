@@ -1,4 +1,6 @@
-# Blokbay crypto payments for Shopware 6
+# Shopware 6 Crypto Payment Gateway: Bitcoin, USDT, USDC, ETH (Blokbay)
+
+Accept crypto payments in Shopware 6: Bitcoin (BTC), Tether (USDT), USD Coin (USDC) and Ether (ETH) on Ethereum, BNB Smart Chain (BSC), Polygon, Base and Arbitrum. Non-custodial: every payment goes straight to your own wallet. 1% per payment, no monthly fee. Download the latest release: [Releases](../../releases/latest).
 
 Accept BTC, USDC, USDT and ETH in your Shopware 6.7 shop. The customer pays on the Blokbay payment page and the funds go straight
 to your own wallet: no custody, no frozen funds, no waiting for a payout. 1% of the paid price is withheld automatically, no fixed costs.
