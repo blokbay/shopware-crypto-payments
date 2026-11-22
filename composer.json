@@ -1,0 +1,49 @@
+{
+    "name": "blokbay/shopware-payment",
+    "description": "Accept BTC, USDC, USDT and ETH on the secure Blokbay payment page. Funds go straight to your own wallet: no custody, 1% of the paid price, no fixed costs.",
+    "version": "1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Blokbay",
+            "homepage": "https://blokbay.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "shopware/core": "~6.7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Blokbay\\Payment\\": "src/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "Blokbay\\Payment\\BlokbayPayment",
+        "plugin-icon": "src/Resources/config/plugin.png",
+        "copyright": "(c) Blokbay",
+        "label": {
+            "en-GB": "Blokbay crypto payments",
+            "de-DE": "Blokbay Krypto-Zahlungen",
+            "it-IT": "Pagamenti crypto Blokbay"
+        },
+        "description": {
+            "en-GB": "Accept BTC, USDC, USDT and ETH on the secure Blokbay payment page. Funds go straight to your own wallet: no custody, 1% of the paid price, no fixed costs.",
+            "de-DE": "BTC, USDC, USDT und ETH über die sichere Blokbay-Zahlungsseite akzeptieren. Das Geld geht direkt in Ihr eigenes Wallet: keine Verwahrung, 1 % des Preises, keine Fixkosten.",
+            "it-IT": "Accetta BTC, USDC, USDT ed ETH con la pagina di pagamento sicura di Blokbay. I fondi vanno direttamente nel tuo wallet: nessuna custodia, 1% del prezzo, nessun costo fisso."
+        },
+        "manufacturerLink": {
+            "en-GB": "https://blokbay.com",
+            "de-DE": "https://blokbay.com",
+            "it-IT": "https://blokbay.com"
+        },
+        "supportLink": {
+            "en-GB": "https://blokbay.com/docs/api",
+            "de-DE": "https://blokbay.com/docs/api",
+            "it-IT": "https://blokbay.com/docs/api"
+        }
+    }
+}

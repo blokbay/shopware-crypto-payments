@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>Blokbay</title>
+        <title lang="de-DE">Blokbay</title>
+        <title lang="it-IT">Blokbay</title>
+
+        <input-field type="password">
+            <name>secretKey</name>
+            <label>Secret API key (sk_live_...)</label>
+            <label lang="de-DE">Geheimer API-Schlüssel (sk_live_...)</label>
+            <label lang="it-IT">Chiave API segreta (sk_live_...)</label>
+            <helpText>Blokbay dashboard, "Payments from your site". It stays on your server and is never shown to customers.</helpText>
+            <helpText lang="de-DE">Blokbay-Dashboard, "Zahlungen von Ihrer Website". Er bleibt auf Ihrem Server und wird Kunden nie angezeigt.</helpText>
+            <helpText lang="it-IT">Pannello Blokbay, "Pagamenti dal tuo sito". Resta sul tuo server e non viene mai mostrata ai clienti.</helpText>
+        </input-field>
+
+        <input-field type="password">
+            <name>webhookSecret</name>
+            <label>Webhook signing secret (whsec_...)</label>
+            <label lang="de-DE">Signatur-Geheimnis des Webhooks (whsec_...)</label>
+            <label lang="it-IT">Segreto di firma del webhook (whsec_...)</label>
+            <helpText>In the Blokbay dashboard set the webhook URL to https://YOUR-SHOP/api/_action/blokbay/webhook and copy the secret here.</helpText>
+            <helpText lang="de-DE">Tragen Sie im Blokbay-Dashboard als Webhook-URL https://IHR-SHOP/api/_action/blokbay/webhook ein und kopieren Sie das Geheimnis hierher.</helpText>
+            <helpText lang="it-IT">Nel pannello Blokbay imposta come URL del webhook https://IL-TUO-NEGOZIO/api/_action/blokbay/webhook e copia qui il segreto.</helpText>
+        </input-field>
+
+        <input-field type="text">
+            <name>publicKey</name>
+            <label>Account (public key pk_live_...)</label>
+            <label lang="de-DE">Konto (öffentlicher Schlüssel pk_live_...)</label>
+            <label lang="it-IT">Account (chiave pubblica pk_live_...)</label>
+            <helpText>Optional. When set, webhook events from any other Blokbay account are refused.</helpText>
+            <helpText lang="de-DE">Optional. Wenn gesetzt, werden Webhook-Ereignisse anderer Blokbay-Konten abgelehnt.</helpText>
+            <helpText lang="it-IT">Facoltativa. Se impostata, gli eventi webhook di altri account Blokbay vengono rifiutati.</helpText>
+        </input-field>
+
+        <input-field type="url">
+            <name>apiBase</name>
+            <label>API address (advanced)</label>
+            <label lang="de-DE">API-Adresse (erweitert)</label>
+            <label lang="it-IT">Indirizzo dell'API (avanzato)</label>
+            <defaultValue>https://blokbay.com</defaultValue>
+            <helpText>Leave https://blokbay.com.</helpText>
+            <helpText lang="de-DE">https://blokbay.com beibehalten.</helpText>
+            <helpText lang="it-IT">Lascia https://blokbay.com.</helpText>
+        </input-field>
+    </card>
+</config>
