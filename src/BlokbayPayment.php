@@ -3,6 +3,9 @@
 namespace Blokbay\Payment;
 
 use Blokbay\Payment\Handler\BlokbayPaymentHandler;
+use Blokbay\Payment\Service\BlokbayApi;
+use Shopware\Core\Defaults;
+use Shopware\Core\Framework\Plugin\Context\UpdateContext;
 use Shopware\Core\Checkout\Payment\PaymentMethodCollection;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
@@ -51,11 +54,19 @@ class BlokbayPayment extends Plugin
             'active' => false,
             'translations' => $translations,
         ]], $context);
+        $this->syncCurrencyRule($context);
+    }
+
+    public function update(UpdateContext $updateContext): void
+    {
+        parent::update($updateContext);
+        $this->syncCurrencyRule($updateContext->getContext());
     }
 
     public function activate(ActivateContext $activateContext): void
     {
         $this->setActive(true, $activateContext->getContext());
+        $this->syncCurrencyRule($activateContext->getContext());
         parent::activate($activateContext);
     }
 
@@ -76,6 +87,61 @@ class BlokbayPayment extends Plugin
         $id = $this->paymentMethodId($context);
         if ($id !== null) {
             $this->paymentRepository()->update([['id' => $id, 'active' => $active]], $context);
+        }
+    }
+
+    /**
+     * Availability rule of the payment method: shown only when the cart currency is accepted by Blokbay (USD, EUR, GBP, CHF,
+     * JPY, CAD, AUD, SGD, HKD, AED). If the default currency of the shop is not accepted, a notice in the administration.
+     * Run on install, activate and update (new currencies added later: run bin/console plugin:update or reactivate).
+     */
+    private function syncCurrencyRule(Context $context): void
+    {
+        $methodId = $this->paymentMethodId($context);
+        $currencies = $this->container?->get('currency.repository');
+        $rules = $this->container?->get('rule.repository');
+        if ($methodId === null || !$currencies instanceof EntityRepository || !$rules instanceof EntityRepository) {
+            return;
+        }
+        $ok = [];
+        $defaultIso = '';
+        foreach ($currencies->search(new Criteria(), $context)->getEntities() as $cur) {
+            $iso = strtoupper((string) $cur->getIsoCode());
+            if ($cur->getId() === Defaults::CURRENCY) {
+                $defaultIso = $iso;
+            }
+            if (BlokbayApi::supported($iso)) {
+                $ok[] = $cur->getId();
+            }
+        }
+        $ruleId = md5('blokbay-payment-currency-rule');
+        if ($ok !== []) {
+            $rules->upsert([[
+                'id' => $ruleId,
+                'name' => 'Blokbay: currencies accepted by Blokbay',
+                'priority' => 1,
+                'description' => 'Created by the Blokbay plugin: the crypto payment method is shown only for these currencies.',
+                'conditions' => [[
+                    'id' => md5('blokbay-payment-currency-condition'),
+                    'type' => 'currency',
+                    'value' => ['operator' => '=', 'currencyIds' => $ok],
+                ]],
+            ]], $context);
+            $this->paymentRepository()->update([['id' => $methodId, 'availabilityRuleId' => $ruleId]], $context);
+        }
+        if ($defaultIso !== '' && !BlokbayApi::supported($defaultIso)) {
+            $notes = $this->container?->get('notification.repository');
+            if ($notes instanceof EntityRepository) {
+                try {
+                    $notes->create([[
+                        'status' => 'warning',
+                        'message' => 'Blokbay accepts prices in ' . implode(', ', array_keys(BlokbayApi::CURRENCIES)) . '. The default currency of this shop is ' . $defaultIso . ': the crypto payment method stays hidden for carts in that currency.',
+                        'adminOnly' => true,
+                    ]], $context);
+                } catch (\Throwable $e) {
+                    // notice only
+                }
+            }
         }
     }
 

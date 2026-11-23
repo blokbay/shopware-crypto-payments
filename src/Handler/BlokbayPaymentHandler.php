@@ -51,12 +51,12 @@ class BlokbayPaymentHandler extends AbstractPaymentHandler
         if ($order === null) {
             throw PaymentException::asyncProcessInterrupted($txId, 'Order not found.');
         }
-        $iso = $order->getCurrency()?->getIsoCode() ?? '';
-        if ($iso !== 'USD') {
-            throw PaymentException::asyncProcessInterrupted($txId, 'Blokbay accepts orders in USD only (order currency: ' . $iso . ').');
+        $iso = strtoupper($order->getCurrency()?->getIsoCode() ?? '');
+        if (!BlokbayApi::supported($iso)) {
+            throw PaymentException::asyncProcessInterrupted($txId, 'Blokbay accepts orders in ' . implode(', ', array_keys(BlokbayApi::CURRENCIES)) . ' (order currency: ' . $iso . ').');
         }
         $returnUrl = (string) $transaction->getReturnUrl();
-        $amount = BlokbayApi::amount($tx->getAmount()->getTotalPrice());
+        $amount = BlokbayApi::amount($tx->getAmount()->getTotalPrice(), $iso);
         $cf = $tx->getCustomFields() ?? [];
         $prev = trim((string) ($cf[PaymentUpdater::CF_PREV] ?? ''), ',');
         if (!empty($cf[PaymentUpdater::CF_ID])) {
@@ -66,13 +66,13 @@ class BlokbayPaymentHandler extends AbstractPaymentHandler
         $number = (string) $order->getOrderNumber();
         $res = $this->updater->api($order->getSalesChannelId())->createPayment([
             'amount' => $amount,
-            'currency' => 'USD',
+            'currency' => $iso,
             'reference' => $number,
             'description' => 'Order ' . $number,
             'customer_email' => (string) $order->getOrderCustomer()?->getEmail(),
             'url_success' => $returnUrl,
             'url_cancel' => $returnUrl . (str_contains($returnUrl, '?') ? '&' : '?') . 'blokbay_cancel=1',
-        ], 'sw-' . $txId . '-' . $amount . '-' . $attempt);
+        ], 'sw-' . $txId . '-' . $amount . ($iso === 'USD' ? '' : '-' . $iso) . '-' . $attempt);
         if (empty($res['id']) || empty($res['url']) || !\is_string($res['id']) || !\is_string($res['url'])) {
             $err = \is_string($res['error'] ?? null) ? $res['error'] : 'error';
             $this->logger->error('Blokbay: payment not created (' . $err . ')', ['orderNumber' => $number]);
@@ -81,7 +81,7 @@ class BlokbayPaymentHandler extends AbstractPaymentHandler
         }
         $this->transactionRepository->update([[
             'id' => $txId,
-            'customFields' => array_merge($cf, [PaymentUpdater::CF_ID => $res['id'], PaymentUpdater::CF_AMOUNT => $amount, PaymentUpdater::CF_PREV => $prev]),
+            'customFields' => array_merge($cf, [PaymentUpdater::CF_ID => $res['id'], PaymentUpdater::CF_AMOUNT => $amount, PaymentUpdater::CF_CURRENCY => $iso, PaymentUpdater::CF_PREV => $prev]),
         ]], $context);
 
         return new RedirectResponse($res['url']);

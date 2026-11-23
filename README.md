@@ -1,6 +1,4 @@
-# Shopware 6 Crypto Payment Gateway: Bitcoin, USDT, USDC, ETH (Blokbay)
-
-Accept crypto payments in Shopware 6: Bitcoin (BTC), Tether (USDT), USD Coin (USDC) and Ether (ETH) on Ethereum, BNB Smart Chain (BSC), Polygon, Base and Arbitrum. Non-custodial: every payment goes straight to your own wallet. 1% per payment, no monthly fee. Download the latest release: [Releases](../../releases/latest).
+# Blokbay crypto payments for Shopware 6
 
 Accept BTC, USDC, USDT and ETH in your Shopware 6.7 shop. The customer pays on the Blokbay payment page and the funds go straight
 to your own wallet: no custody, no frozen funds, no waiting for a payout. 1% of the paid price is withheld automatically, no fixed costs.
@@ -13,7 +11,7 @@ You remain responsible for your shop and for your obligations towards your custo
 4. In the Blokbay dashboard set the webhook URL to `https://YOUR-SHOP/api/_action/blokbay/webhook` and send the test event (the shop answers "pong").
 5. Add the payment method "Crypto (BTC, USDC, USDT, ETH)" to your sales channel (Sales Channels > Payment methods).
 
-Orders must be in USD. Bitcoin is available from 100 USD; stablecoins and ETH from 1 USD.
+Order currencies: USD, EUR, GBP, CHF, JPY, CAD, AUD, SGD, HKD, AED (the customer pays in crypto at the current exchange rate). The plugin adds the availability rule "Blokbay: currencies accepted by Blokbay", so the method is hidden for other currencies, and shows a notice in the administration if the default currency is not accepted. Bitcoin is available from the equivalent of 100 USD; stablecoins and ETH from the equivalent of 1 USD.
 
 ## How it works
 - At checkout the plugin creates a Blokbay payment (with an Idempotency-Key) and sends the customer to the payment page.
@@ -32,7 +30,7 @@ automatisch einbehalten, keine Fixkosten. Sie bleiben für Ihren Shop und Ihre P
 
 Einrichtung: Konto auf https://blokbay.com eröffnen und Wallet hinterlegen; Plugin installieren und aktivieren; geheimen API-Schlüssel,
 Webhook-Geheimnis und optional das Konto (pk_live_...) eintragen; im Blokbay-Dashboard die Webhook-URL
-`https://IHR-SHOP/api/_action/blokbay/webhook` setzen; die Zahlungsart dem Verkaufskanal zuweisen. Bestellungen in USD.
+`https://IHR-SHOP/api/_action/blokbay/webhook` setzen; die Zahlungsart dem Verkaufskanal zuweisen. Bestellungen in USD, EUR, GBP, CHF, JPY, CAD, AUD, SGD, HKD, AED.
 
 ---
 
@@ -44,21 +42,4 @@ in automatico, nessun costo fisso. Resti responsabile del tuo negozio e dei tuoi
 
 Configurazione: apri un account su https://blokbay.com e aggiungi il wallet; installa e attiva il plugin; inserisci chiave API segreta,
 segreto del webhook ed eventualmente l'account (pk_live_...); nel pannello Blokbay imposta l'URL del webhook
-`https://IL-TUO-NEGOZIO/api/_action/blokbay/webhook`; assegna il metodo di pagamento al canale di vendita. Ordini in USD.
-
-## Supported networks
-Payments settle on chain through the verified LuxSplit gateway contract `0xd4b637cC81D5B5115Cd0204A9ba6B60474F05e31` (same address on every network, source verified on Sourcify):
-
-| Network | Chain ID | Assets |
-|---|---|---|
-| BNB Smart Chain (BSC, BNB Chain) | 56 | USDC, USDT |
-| Ethereum | 1 | ETH, USDC, USDT |
-| Polygon | 137 | USDC, USDT |
-| Base | 8453 | USDC |
-| Arbitrum | 42161 | USDC, USDT |
-| Bitcoin | – | BTC (orders from 100 USD) |
-
-On BNB Smart Chain the buyer pays with USDC or USDT (BEP-20) and the funds reach the merchant's wallet in the same transaction.
-Verified source (Sourcify, chain 56): https://repo.sourcify.dev/56/0xd4b637cC81D5B5115Cd0204A9ba6B60474F05e31
-The network list is also in [`networks.json`](networks.json).
-
+`https://IL-TUO-NEGOZIO/api/_action/blokbay/webhook`; assegna il metodo di pagamento al canale di vendita. Ordini in USD, EUR, GBP, CHF, JPY, CAD, AUD, SGD, HKD, AED.

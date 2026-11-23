@@ -22,6 +22,7 @@ class PaymentUpdater
 {
     public const CF_ID = 'blokbay_payment_id';
     public const CF_AMOUNT = 'blokbay_amount';
+    public const CF_CURRENCY = 'blokbay_currency';
     public const CF_PREV = 'blokbay_prev_ids';
     private const CONFIG = 'BlokbayPayment.config.';
 
@@ -97,7 +98,9 @@ class PaymentUpdater
         $state = $tx->getStateMachineState()?->getTechnicalName() ?? '';
         $status = (string) ($p['status'] ?? '');
         if ($status === 'paid') {
-            if ($amount === '' || $amount !== (string) ($p['amount'] ?? '') || ($p['currency'] ?? '') !== 'USD') {
+            // Amount and currency as sent for this order (transactions created before 1.1.0 have no currency field: USD).
+            $currency = (string) (($tx->getCustomFields() ?? [])[self::CF_CURRENCY] ?? 'USD');
+            if ($amount === '' || $amount !== (string) ($p['amount'] ?? '') || ($p['currency'] ?? '') !== $currency) {
                 return 'amount mismatch';
             }
             if ($state === OrderTransactionStates::STATE_PAID) {

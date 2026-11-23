@@ -25,10 +25,23 @@ class BlokbayApi
         $this->transport = $transport;
     }
 
-    /** USD amount with 2 decimals, as a string ("249.90"). */
-    public static function amount(float $value): string
+    /**
+     * Currencies accepted by the Blokbay API, with their decimals (JPY has none). The buyer pays in crypto at the current
+     * exchange rate; amount and currency come back in the payment and in webhooks exactly as sent.
+     */
+    public const CURRENCIES = ['USD' => 2, 'EUR' => 2, 'GBP' => 2, 'CHF' => 2, 'JPY' => 0, 'CAD' => 2, 'AUD' => 2, 'SGD' => 2, 'HKD' => 2, 'AED' => 2];
+
+    public static function supported(?string $currency): bool
     {
-        return number_format(round($value, 2), 2, '.', '');
+        return isset(self::CURRENCIES[strtoupper((string) $currency)]);
+    }
+
+    /** Amount with the decimals of the currency, as a string ("249.90", JPY "25000"). */
+    public static function amount(float $value, string $currency = 'USD'): string
+    {
+        $dec = self::CURRENCIES[strtoupper($currency)] ?? 2;
+
+        return number_format(round($value, $dec), $dec, '.', '');
     }
 
     /**
