@@ -23,11 +23,11 @@ class BlokbayPayment extends Plugin
 {
     public const TECHNICAL_NAME = 'payment_blokbay';
 
-    /** @var array<string, array{name: string, description: string}> */
+    /** @var array<string, array{name: string, description: string}> Used only when the payment method is created (first install): names and descriptions edited by the merchant are never overwritten. */
     private const TEXTS = [
-        'en-GB' => ['name' => 'Crypto (BTC, USDC, USDT, ETH)', 'description' => 'Pay with your crypto wallet on the secure Blokbay payment page.'],
-        'de-DE' => ['name' => 'Krypto (BTC, USDC, USDT, ETH)', 'description' => 'Bezahlen Sie mit Ihrem Krypto-Wallet auf der sicheren Blokbay-Zahlungsseite.'],
-        'it-IT' => ['name' => 'Crypto (BTC, USDC, USDT, ETH)', 'description' => 'Paga con il tuo wallet crypto sulla pagina di pagamento sicura di Blokbay.'],
+        'en-GB' => ['name' => 'Crypto (USDT, USDC, ETH, BTC, SOL)', 'description' => 'Pay in crypto: USDT, USDC, ETH, BTC or SOL, from your wallet or an exchange'],
+        'de-DE' => ['name' => 'Krypto (USDT, USDC, ETH, BTC, SOL)', 'description' => 'Mit Krypto bezahlen: USDT, USDC, ETH, BTC oder SOL, aus Ihrem Wallet oder von einer Börse'],
+        'it-IT' => ['name' => 'Crypto (USDT, USDC, ETH, BTC, SOL)', 'description' => 'Paga in crypto: USDT, USDC, ETH, BTC o SOL, dal tuo wallet o da un exchange'],
     ];
 
     public function install(InstallContext $installContext): void

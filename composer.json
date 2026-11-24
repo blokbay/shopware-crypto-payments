@@ -1,7 +1,7 @@
 {
     "name": "blokbay/shopware-payment",
-    "description": "Accept BTC, USDC, USDT and ETH on the secure Blokbay payment page. Funds go straight to your own wallet: no custody, 1% of the paid price, no fixed costs.",
-    "version": "1.1.0",
+    "description": "Accept USDT, USDC, ETH, BTC and SOL on the secure Blokbay payment page. Funds go straight to your own wallet: no custody, 1% of the paid price, no fixed costs.",
+    "version": "1.2.0",
     "type": "shopware-platform-plugin",
     "license": "MIT",
     "authors": [
@@ -31,9 +31,9 @@
             "it-IT": "Pagamenti crypto Blokbay"
         },
         "description": {
-            "en-GB": "Accept BTC, USDC, USDT and ETH on the secure Blokbay payment page. Funds go straight to your own wallet: no custody, 1% of the paid price, no fixed costs.",
-            "de-DE": "BTC, USDC, USDT und ETH über die sichere Blokbay-Zahlungsseite akzeptieren. Das Geld geht direkt in Ihr eigenes Wallet: keine Verwahrung, 1 % des Preises, keine Fixkosten.",
-            "it-IT": "Accetta BTC, USDC, USDT ed ETH con la pagina di pagamento sicura di Blokbay. I fondi vanno direttamente nel tuo wallet: nessuna custodia, 1% del prezzo, nessun costo fisso."
+            "en-GB": "Accept USDT, USDC, ETH, BTC and SOL on the secure Blokbay payment page. Funds go straight to your own wallet: no custody, 1% of the paid price, no fixed costs.",
+            "de-DE": "USDT, USDC, ETH, BTC und SOL über die sichere Blokbay-Zahlungsseite akzeptieren. Das Geld geht direkt in Ihr eigenes Wallet: keine Verwahrung, 1 % des Preises, keine Fixkosten.",
+            "it-IT": "Accetta USDT, USDC, ETH, BTC e SOL con la pagina di pagamento sicura di Blokbay. I fondi vanno direttamente nel tuo wallet: nessuna custodia, 1% del prezzo, nessun costo fisso."
         },
         "manufacturerLink": {
             "en-GB": "https://blokbay.com",
